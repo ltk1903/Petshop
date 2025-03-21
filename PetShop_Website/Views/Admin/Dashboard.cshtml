@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="page-inner">
+        @Html.Partial("_Title_content")
+        @Html.Partial("_Card_item")
+        <div class="row">
+            @Html.Partial("_Statistic_chart")
+            <div class="col-md-4">
+                @Html.Partial("_Daily_sales")
+                @Html.Partial("_User_online")
+            </div>
+        </div>
+        <div class="row">
+            @Html.Partial("_New_customer")
+            @Html.Partial("_Transaction")
+        </div>
+    </div>
+</div>
+
