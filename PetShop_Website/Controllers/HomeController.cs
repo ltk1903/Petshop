@@ -33,5 +33,12 @@ namespace PetShop_Website.Controllers
 
             return View();
         }
+
+        public ActionResult Cart()
+        {
+            ViewBag.Message = "Your cart page.";
+
+            return View();
+        }
     }
 }
