@@ -26,5 +26,12 @@ namespace PetShop_Website.Controllers
 
             return View();
         }
+
+        public ActionResult Shop()
+        {
+            ViewBag.Message = "Your list all product page.";
+
+            return View();
+        }
     }
 }

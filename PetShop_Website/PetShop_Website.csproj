@@ -799,6 +799,7 @@
     <Content Include="Views\Admin\_User_online.cshtml" />
     <Content Include="Views\Admin\_New_customer.cshtml" />
     <Content Include="Views\Admin\_Transaction.cshtml" />
+    <Content Include="Views\Home\Shop.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
