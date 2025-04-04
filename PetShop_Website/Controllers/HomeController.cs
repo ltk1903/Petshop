@@ -40,5 +40,12 @@ namespace PetShop_Website.Controllers
 
             return View();
         }
+
+        public ActionResult Checkout()
+        {
+            ViewBag.Message = "Your checkout page.";
+
+            return View();
+        }
     }
 }
