@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "Delivery";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="page-inner">
+        <h3 class="mb-4">Delivery Managment</h3>
+
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Delivery address</th>
+                    <th>Delivery date</th>
+                    <th>Delivery status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Đơn hàng mẫu -->
+                <tr>
+                    <td>#GH001</td>
+                    <td>Nguyễn Văn A</td>
+                    <td>123 Trần Hưng Đạo, Quận 1</td>
+                    <td>06/04/2025</td>
+                    <td><span class="badge badge-warning">Đang giao</span></td>
+                    <td>
+                        <a href="#" class="btn btn-sm btn-success"><i class="fas fa-check"></i> Delivered</a>
+                        <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-times"></i> Failed</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#GH002</td>
+                    <td>Trần Thị B</td>
+                    <td>456 Lê Văn Sỹ, Tân Bình</td>
+                    <td>05/04/2025</td>
+                    <td><span class="badge badge-success">Delivered</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-secondary" disabled><i class="fas fa-check"></i> Complete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

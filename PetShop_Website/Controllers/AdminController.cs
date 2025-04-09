@@ -13,5 +13,40 @@ namespace PetShop_Website.Controllers
         {
             return View();
         }
+
+        public ActionResult Product()
+        {
+            return View();
+        }
+
+        public ActionResult Stock()
+        {
+            return View();
+        }
+
+        public ActionResult Order()
+        {
+            return View();
+        }
+
+        public ActionResult Revenue()
+        {
+            return View();
+        }
+
+        public ActionResult Delivery()
+        {
+            return View();
+        }
+
+        public ActionResult Users()
+        {
+            return View();
+        }
+
+        public ActionResult Category()
+        {
+            return View();
+        }
     }
 }

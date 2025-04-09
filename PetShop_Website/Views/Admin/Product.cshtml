@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="page-inner">
+        <h3 class="mb-4">Add New Products</h3>
+
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="ProductName">Product name</label>
+                <input type="text" class="form-control" id="ProductName" placeholder="Enter product name">
+            </div>
+
+            <div class="form-group">
+                <label for="Price">Price</label>
+                <input type="number" class="form-control" id="Price" placeholder="Enter price">
+            </div>
+
+            <div class="form-group">
+                <label for="Quantity">Quantity</label>
+                <input type="number" class="form-control" id="Quantity" placeholder="Enter quantity">
+            </div>
+
+            <div class="form-group">
+                <label for="Category">Category</label>
+                <select class="form-control" id="Category">
+                    <option>Choose categories</option>
+                    <option>Thức ăn</option>
+                    <option>Phụ kiện</option>
+                    <option>Đồ chơi</option>
+                    <option>Vệ sinh</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Description">Description</label>
+                <textarea class="form-control" id="Description" rows="3" placeholder="Describe product detail..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="Image">Image</label>
+                <input type="file" class="form-control-file" id="Image">
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i> Save product
+            </button>
+            <a href="@Url.Action("Product", "Admin")" class="btn btn-secondary ml-2">Hủy</a>
+        </form>
+    </div>
+</div>
