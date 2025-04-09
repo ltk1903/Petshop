@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "_Sidebar";
+
 }
 
 <div class="sidebar-wrapper scrollbar scrollbar-inner">
@@ -18,19 +19,19 @@
                 <div class="collapse" id="dashboard">
                     <ul class="nav nav-collapse">
                         <li>
-                            <a href="../demo1/index.html">
+                            <a href="@Url.Action("Delivery", "Admin")">
                                 <span class="sub-item">Delivery</span>
                             </a>
                         </li>
 
                         <li>
-                            <a href="../demo1/index.html">
+                            <a href="@Url.Action("Order", "Admin")">
                                 <span class="sub-item">Order</span>
                             </a>
                         </li>
 
                         <li>
-                            <a href="../demo1/index.html">
+                            <a href="@Url.Action("Stock", "Admin")">
                                 <span class="sub-item">Stock</span>
                             </a>
                         </li>
@@ -44,25 +45,25 @@
                 <h4 class="text-section">Manage</h4>
             </li>
             <li class="nav-item">
-                <a href="product-manager.html">
+                <a href="@Url.Action("Product", "Admin")">
                     <i class="fas fa-layer-group"></i>
                     <p>Product</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="sidebar-layouts.html">
+                <a href="@Url.Action("Category", "Admin")">
                     <i class="fas fa-th-list"></i>
                     <p>Category</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="sidebar-layouts.html">
+                <a href="@Url.Action("Users", "Admin")">
                     <i class="fas fa-th-list"></i>
-                    <p>Employee Management</p>
+                    <p>Users Management</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="sidebar-layouts.html">
+                <a href="@Url.Action("Revenue", "Admin")">
                     <i class="fas fa-th-list"></i>
                     <p>Sales Revenue</p>
                 </a>

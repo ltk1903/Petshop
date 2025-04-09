@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="page-inner">
+        <h3 class="mb-4">Order Managment</h3>
+
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Order date</th>
+                    <th>Total amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dữ liệu mẫu -->
+                <tr>
+                    <td>#DH001</td>
+                    <td>Nguyễn Văn A</td>
+                    <td>06/04/2025</td>
+                    <td>450.000₫</td>
+                    <td><span class="badge badge-warning">Pending processing</span></td>
+                    <td>
+                        <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
+                        <a href="#" class="btn btn-sm btn-success"><i class="fas fa-check"></i></a>
+                        <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-times"></i></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#DH002</td>
+                    <td>Trần Thị B</td>
+                    <td>05/04/2025</td>
+                    <td>320.000₫</td>
+                    <td><span class="badge badge-success">Delivered</span></td>
+                    <td>
+                        <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
+                        <button class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i></button>
+                        <button class="btn btn-sm btn-danger" disabled><i class="fas fa-times"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
