@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<PetShop_Website.Models.Product>
 
+
 @{
     ViewBag.Title = "Stock";
     Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
@@ -25,9 +26,17 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.ProductId</td>
+                        <td>@item.ProductID</td>
                         <td>
-                            <img src="@Url.Content(item.ImageURL)" alt="Sản phẩm" width="60" />
+                            @if (!string.IsNullOrEmpty(item.ImageURL))
+                            {
+                                <img src="@Url.Content(item.ImageURL)" alt="Sản phẩm" width="60" />
+                            }
+                            else
+                            {
+                                <span>Chưa có ảnh</span>
+                            }
+
                         </td>
                         <td>@item.ProductName</td>
                         <td>@item.Price.ToString("N0")₫</td>
@@ -44,11 +53,11 @@
                             }
                             else
                             {
-                                <a href="@Url.Action("PublishProduct", "Admin", new { id = item.ProductId })" class="btn btn-sm btn-success"><i class="fas fa-upload"></i></a>
+                                <a href="@Url.Action("PublishProduct", "Admin", new { id = item.ProductID })" class="btn btn-sm btn-success"><i class="fas fa-upload"></i></a>
                             }
 
-                            <a href="@Url.Action("EditProduct", "Admin", new { id = item.ProductId })" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                            <a href="@Url.Action("DeleteProduct", "Admin", new { id = item.ProductId })" class="btn btn-sm btn-danger" onclick="return confirm('Xác nhận xóa sản phẩm này?')"><i class="fas fa-trash-alt"></i></a>
+                            <a href="@Url.Action("EditProduct", "Admin", new { id = item.ProductID })" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                            <a href="@Url.Action("DeleteProduct", "Admin", new { id = item.ProductID })" class="btn btn-sm btn-danger" onclick="return confirm('Xác nhận xóa sản phẩm này?')"><i class="fas fa-trash-alt"></i></a>
                         </td>
                     </tr>
                 }

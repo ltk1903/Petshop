@@ -7,7 +7,7 @@ namespace PetShop_Website.Models
 {
     public class Category
     {
-        public int CategoryId { get; set; }
+        public int CategoryID { get; set; }
         public string CategoryName { get; set; }
         public string Descriptiom { get; set; }
         public DateTime CreatedAt { get; set; }
