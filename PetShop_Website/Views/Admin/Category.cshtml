@@ -1,4 +1,4 @@
-﻿
+﻿@model List<PetShop_Website.Models.Category>
 @{
     ViewBag.Title = "Category";
     Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
@@ -6,13 +6,14 @@
 
 <div class="container">
     <div class="page-inner">
-        <h3 class="mb-4">Categories Managment</h3>
+        <h3 class="mb-4">Categories Management</h3>
 
         <!-- Form thêm danh mục -->
-        <form class="form-inline mb-4">
-            <input type="text" class="form-control mr-2" placeholder="Tên danh mục mới" style="width: 300px;" />
+        @using (Html.BeginForm("AddCategory", "Admin", FormMethod.Post, new { @class = "form-inline mb-4" }))
+        {
+            <input type="text" name="categoryName" class="form-control mr-2" placeholder="Tên danh mục mới" style="width: 300px;" required />
             <button type="submit" class="btn btn-primary">Add new category</button>
-        </form>
+        }
 
         <!-- Bảng danh sách -->
         <table class="table table-bordered table-hover">
@@ -25,27 +26,34 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Dữ liệu mẫu -->
-                <tr>
-                    <td>1</td>
-                    <td>Thức ăn cho chó</td>
-                    <td>01/04/2025</td>
-                    <td>
-                        <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Sửa</a>
-                        <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Xóa</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Phụ kiện thú cưng</td>
-                    <td>03/04/2025</td>
-                    <td>
-                        <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Sửa</a>
-                        <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Xóa</a>
-                    </td>
-                </tr>
+                @if (Model.Any())
+                {
+                    int index = 1;
+                    foreach (var cat in Model)
+                    {
+                        <tr>
+                            <td>@index</td>
+                            <td>@cat.CategoryName</td>
+                            <td>@cat.CreatedAt.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <a href="@Url.Action("EditCategory", "Admin", new { id = cat.CategoryID })" class="btn btn-sm btn-info">
+                                    <i class="fas fa-edit"></i> Sửa
+                                </a>
+                                <a href="@Url.Action("DeleteCategory", "Admin", new { id = cat.CategoryID })" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                                    <i class="fas fa-trash-alt"></i> Xóa
+                                </a>
+                            </td>
+                        </tr>
+                        index++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center">Chưa có danh mục nào</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
 </div>
-
