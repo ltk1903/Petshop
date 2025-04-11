@@ -13,5 +13,10 @@ namespace PetShop_Website.Models
         public DateTime CreatedAt { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
+
+        public Category()
+        {
+            Products = new HashSet<Product>();
+        }
     }
 }

@@ -155,7 +155,62 @@ namespace PetShop_Website.Controllers
 
         public ActionResult Category()
         {
-            return View();
+            var categories = db.Categories.OrderByDescending(c => c.CreatedAt).ToList();
+            return View(categories);
+        }
+
+        [HttpPost]
+        public ActionResult AddCategory(string categoryName)
+        {
+            if (!string.IsNullOrEmpty(categoryName))
+            {
+                var category = new Category
+                {
+                    CategoryName = categoryName,
+                    CreatedAt = DateTime.Now
+                };
+                db.Categories.Add(category);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Category");
+        }
+
+        // Xoá danh mục
+        public ActionResult DeleteCategory(int id)
+        {
+            var category = db.Categories.Find(id);
+            if (category != null)
+            {
+                db.Categories.Remove(category);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Category");
+        }
+
+        // Cập nhật danh mục (GET)
+        public ActionResult EditCategory(int id)
+        {
+            var category = db.Categories.Find(id);
+            if (category == null)
+                return HttpNotFound();
+
+            return View(category);
+        }
+
+        // Cập nhật danh mục (POST)
+        [HttpPost]
+        public ActionResult EditCategory(Category updatedCategory)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(updatedCategory).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Category");
+            }
+
+            return View(updatedCategory);
         }
     }
 }
