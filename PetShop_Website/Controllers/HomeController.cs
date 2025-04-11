@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PetShop_Website.Models;
 
 namespace PetShop_Website.Controllers
 {
     public class HomeController : Controller
     {
+        private PetShopContext db = new PetShopContext();
         public ActionResult Index()
         {
             return View();
@@ -27,11 +29,16 @@ namespace PetShop_Website.Controllers
             return View();
         }
 
-        public ActionResult Shop()
+        public ActionResult Shop(string search)
         {
-            ViewBag.Message = "Your list all product page.";
+            var products = db.Products.AsQueryable();
 
-            return View();
+            if (!string.IsNullOrEmpty(search))
+            {
+                products = products.Where(p => p.ProductName.Contains(search));
+            }
+
+            return View(products.ToList());
         }
 
         public ActionResult Cart()
