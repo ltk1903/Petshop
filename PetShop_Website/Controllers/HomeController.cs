@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PetShop_Website.Models;
+using System.Data.Entity;
 
 namespace PetShop_Website.Controllers
 {
@@ -29,7 +30,7 @@ namespace PetShop_Website.Controllers
             return View();
         }
 
-        public ActionResult Shop(string search)
+        public ActionResult Shop(string search, int? categoryId, decimal? priceFrom, decimal? priceTo)
         {
             var products = db.Products.AsQueryable();
 
@@ -38,8 +39,26 @@ namespace PetShop_Website.Controllers
                 products = products.Where(p => p.ProductName.Contains(search));
             }
 
+            if (categoryId.HasValue)
+            {
+                products = products.Where(p => p.CategoryID == categoryId.Value);
+            }
+
+            if (priceFrom.HasValue)
+            {
+                products = products.Where(p => p.Price >= priceFrom.Value);
+            }
+
+            if (priceTo.HasValue)
+            {
+                products = products.Where(p => p.Price <= priceTo.Value);
+            }
+
+            ViewBag.Categories = db.Categories.ToList();
+
             return View(products.ToList());
         }
+
 
         public ActionResult Cart()
         {
