@@ -1,0 +1,49 @@
+﻿@model PetShop_Website.Models.Order
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="page-inner">
+        <h3 class="mb-4">Chi tiết đơn hàng #@Model.OrderID</h3>
+
+        <div class="mb-4">
+            <strong>Khách hàng:</strong> @Model.User.FullName <br />
+            <strong>Email:</strong> @Model.User.Email <br />
+            <strong>Ngày đặt:</strong> @Model.OrderDate.ToString("dd/MM/yyyy HH:mm") <br />
+            <strong>Trạng thái:</strong> <span class="badge badge-info">@Model.OrderStatus</span>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderDetails)
+                {
+                    <tr>
+                        <td>@item.Product.ProductName</td>
+                        <td>@item.UnitPrice.ToString("N0")₫</td>
+                        <td>@item.Quantity</td>
+                        <td>@(item.UnitPrice * item.Quantity).ToString("N0")₫</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3" class="text-right">Tổng cộng:</th>
+                    <th>@Model.TotalAmount.ToString("N0")₫</th>
+                </tr>
+            </tfoot>
+        </table>
+
+        <a href="@Url.Action("Order", "Admin")" class="btn btn-secondary">Quay lại</a>
+    </div>
+</div>

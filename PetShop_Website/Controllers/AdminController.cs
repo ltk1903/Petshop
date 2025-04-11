@@ -107,7 +107,35 @@ namespace PetShop_Website.Controllers
 
         public ActionResult Order()
         {
-            return View();
+            var orders = db.Orders.Include(o => o.User).Include(o => o.OrderDetails).Include(o => o.Payment).ToList();
+            return View(orders);
+        }
+
+        public ActionResult OrderDetails(int id)
+        {
+            var order = db.Orders
+                .Include(o => o.User)
+                .Include(o => o.OrderDetails.Select(d => d.Product))
+                .Include(o => o.Payment)
+                .FirstOrDefault(o => o.OrderID == id);
+
+            if (order == null)
+                return HttpNotFound();
+
+            return View(order);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateOrderStatus(int id, string status)
+        {
+            var order = db.Orders.Find(id);
+            if (order == null)
+                return HttpNotFound();
+
+            order.OrderStatus = status;
+            db.SaveChanges();
+
+            return RedirectToAction("Order");
         }
 
         public ActionResult Revenue()

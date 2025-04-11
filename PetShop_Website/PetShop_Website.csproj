@@ -839,6 +839,7 @@
     <Content Include="Views\AdminAccount\Login.cshtml" />
     <Content Include="Views\AdminAccount\Register.cshtml" />
     <Content Include="Views\Admin\EditProduct.cshtml" />
+    <Content Include="Views\Admin\OrderDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
