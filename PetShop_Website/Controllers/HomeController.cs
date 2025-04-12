@@ -59,6 +59,21 @@ namespace PetShop_Website.Controllers
             return View(products.ToList());
         }
 
+        public ActionResult ProductDetail(int id)
+        {
+            var product = db.Products
+                            .Include(p => p.Category) // RẤT QUAN TRỌNG
+                            .FirstOrDefault(p => p.ProductID == id);
+
+            if (product == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(product);
+        }
+
+
 
         public ActionResult Cart()
         {
