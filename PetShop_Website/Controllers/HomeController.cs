@@ -159,9 +159,94 @@ namespace PetShop_Website.Controllers
 
         public ActionResult Checkout()
         {
-            ViewBag.Message = "Your checkout page.";
+            var cart = Session["Cart"] as List<CartItem>;
+            if (cart == null || cart.Count == 0)
+            {
+                TempData["Error"] = "Giỏ hàng trống!";
+                return RedirectToAction("Cart");
+            }
 
+            var viewModel = new CheckoutViewModel
+            {
+                CartItems = cart,
+                TotalAmount = cart.Sum(item => item.Product.Price * item.Quantity)
+            };
+
+            return View(viewModel);
+        }
+
+
+        [HttpPost]
+        public ActionResult Checkout(CheckoutViewModel viewModel)
+        {
+            var cart = Session["Cart"] as List<CartItem>; // lấy từ session thay vì từ viewModel
+            var user = Session["User"] as User;
+
+            if (cart == null || cart.Count == 0)
+            {
+                TempData["Error"] = "Giỏ hàng trống!";
+                return RedirectToAction("Cart");
+            }
+
+            if (user == null)
+            {
+                TempData["Error"] = "Bạn cần đăng nhập để thanh toán!";
+                return RedirectToAction("Login", "Account");
+            }
+
+            decimal totalAmount = cart.Sum(item => item.Product.Price * item.Quantity);
+
+            var order = new Order
+            {
+                UserID = user.UserID,
+                OrderDate = DateTime.Now,
+                OrderStatus = "Pending",
+                TotalAmount = totalAmount,
+                OrderDetails = new List<OrderDetail>()
+            };
+
+            foreach (var item in cart)
+            {
+                order.OrderDetails.Add(new OrderDetail
+                {
+                    ProductID = item.Product.ProductID,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.Product.Price
+                });
+
+                var dbProduct = db.Products.Find(item.Product.ProductID);
+                if (dbProduct != null && dbProduct.StockQuantity >= item.Quantity)
+                {
+                    dbProduct.StockQuantity -= item.Quantity;
+                }
+            }
+
+            db.Orders.Add(order);
+            db.SaveChanges();
+
+            var payment = new Payment
+            {
+                OrderID = order.OrderID,
+                PaymentMethod = viewModel.PaymentMethod,
+                PaymentStatus = "Completed",
+                PaymentDate = DateTime.Now,
+                TransactionID = Guid.NewGuid().ToString()
+            };
+
+            db.Payments.Add(payment);
+            db.SaveChanges();
+
+            Session["Cart"] = null;
+            TempData["Success"] = "Đặt hàng thành công!";
+            return RedirectToAction("OrderSuccess");
+        }
+
+
+
+        public ActionResult OrderSuccess()
+        {
             return View();
         }
+
     }
 }
