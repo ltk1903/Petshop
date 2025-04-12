@@ -75,12 +75,87 @@ namespace PetShop_Website.Controllers
 
 
 
+        public ActionResult AddToCart(int id)
+        {
+            var product = db.Products.Find(id);
+            if (product == null) return HttpNotFound();
+
+            var cart = Session["Cart"] as List<CartItem> ?? new List<CartItem>();
+            var item = cart.FirstOrDefault(p => p.Product.ProductID == id);
+
+            if (item != null)
+            {
+                if (item.Quantity < product.StockQuantity)
+                {
+                    item.Quantity++;
+                }
+                else
+                {
+                    TempData["Error"] = "Sản phẩm đã đạt số lượng tồn kho.";
+                }
+            }
+            else
+            {
+                if (product.StockQuantity > 0)
+                {
+                    cart.Add(new CartItem { Product = product, Quantity = 1 });
+                }
+                else
+                {
+                    TempData["Error"] = "Sản phẩm hiện đã hết hàng.";
+                }
+            }
+
+            Session["Cart"] = cart;
+            return RedirectToAction("Cart");
+        }
+
+
         public ActionResult Cart()
         {
-            ViewBag.Message = "Your cart page.";
-
-            return View();
+            var cart = Session["Cart"] as List<CartItem> ?? new List<CartItem>();
+            return View(cart);
         }
+
+        [HttpPost]
+        public ActionResult UpdateQuantity(int productId, int quantity)
+        {
+            var cart = Session["Cart"] as List<CartItem>;
+            var product = db.Products.Find(productId);
+
+            if (cart != null && product != null)
+            {
+                var item = cart.FirstOrDefault(p => p.Product.ProductID == productId);
+                if (item != null)
+                {
+                    if (quantity <= product.StockQuantity && quantity > 0)
+                    {
+                        item.Quantity = quantity;
+                    }
+                    else
+                    {
+                        TempData["Error"] = $"Số lượng yêu cầu không hợp lệ. Tồn kho hiện tại: {product.StockQuantity}";
+                    }
+                }
+            }
+            return RedirectToAction("Cart");
+        }
+
+
+        public ActionResult RemoveFromCart(int id)
+        {
+            var cart = Session["Cart"] as List<CartItem>;
+            if (cart != null)
+            {
+                var item = cart.FirstOrDefault(p => p.Product.ProductID == id);
+                if (item != null)
+                {
+                    cart.Remove(item);
+                }
+            }
+            return RedirectToAction("Cart");
+        }
+
 
         public ActionResult Checkout()
         {
