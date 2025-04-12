@@ -49,7 +49,10 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <h3><a href="#">@product.ProductName</a></h3>
+                                    <h3>
+                                        <a href="@Url.Action("ProductDetail", "Home", new { id = product.ProductID })">@product.ProductName</a>
+                                    </h3>
+
                                     <div class="pricing">
                                         <p class="price"><span>$@product.Price</span></p>
                                     </div>
