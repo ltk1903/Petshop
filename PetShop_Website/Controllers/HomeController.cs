@@ -62,7 +62,7 @@ namespace PetShop_Website.Controllers
         public ActionResult ProductDetail(int id)
         {
             var product = db.Products
-                            .Include(p => p.Category) // RẤT QUAN TRỌNG
+                            .Include(p => p.Category) 
                             .FirstOrDefault(p => p.ProductID == id);
 
             if (product == null)
@@ -179,7 +179,7 @@ namespace PetShop_Website.Controllers
         [HttpPost]
         public ActionResult Checkout(CheckoutViewModel viewModel)
         {
-            var cart = Session["Cart"] as List<CartItem>; // lấy từ session thay vì từ viewModel
+            var cart = Session["Cart"] as List<CartItem>; 
             var user = Session["User"] as User;
 
             if (cart == null || cart.Count == 0)
