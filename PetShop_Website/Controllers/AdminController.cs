@@ -14,6 +14,9 @@ namespace PetShop_Website.Controllers
         private PetShopContext db = new PetShopContext();
         public ActionResult Dashboard()
         {
+            if (Session["Admin"] == null)
+                return RedirectToAction("Login", "AdminAccount");
+
             return View();
         }
 
