@@ -16,5 +16,7 @@ namespace PetShop_Website.Models
         public DateTime CreatedAt { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Reviewer> Reviewers { get; set; }
+        public bool IsBlocked { get; set; }
+
     }
 }

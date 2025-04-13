@@ -30,7 +30,19 @@ namespace PetShop_Website.Controllers
             var user = db.Users.FirstOrDefault(u =>
                 u.Email == email || u.Username == email);
 
-            if (user != null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            if (user == null)
+            {
+                ViewBag.Error = "Tài khoản không tồn tại.";
+                return View();
+            }
+
+            if (user.IsBlocked)
+            {
+                ViewBag.Error = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.";
+                return View();
+            }
+
+            if (BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
             {
                 Session["User"] = user;
                 TempData["Success"] = "Đăng nhập thành công!";
@@ -40,6 +52,7 @@ namespace PetShop_Website.Controllers
             ViewBag.Error = "Thông tin đăng nhập không hợp lệ.";
             return View();
         }
+
 
 
         // GET: /Account/Register

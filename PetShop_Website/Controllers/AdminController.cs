@@ -153,8 +153,57 @@ namespace PetShop_Website.Controllers
 
         public ActionResult Users()
         {
-            return View();
+            var users = db.Users.OrderByDescending(u => u.CreatedAt).ToList();
+            return View(users);
         }
+
+        public ActionResult SetRole(int id, string role)
+        {
+            var user = db.Users.Find(id);
+            if (user == null)
+                return HttpNotFound();
+
+            // Chỉ cho phép giá trị hợp lệ
+            if (role != "Admin" && role != "User")
+            {
+                TempData["Error"] = "Vai trò không hợp lệ.";
+                return RedirectToAction("Users");
+            }
+
+            user.Role = role;
+            db.SaveChanges();
+
+            TempData["Success"] = "Phân quyền thành công!";
+            return RedirectToAction("Users");
+        }
+
+
+
+        public ActionResult BlockUser(int id)
+        {
+            var user = db.Users.Find(id);
+            if (user != null)
+            {
+                user.IsBlocked = true;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Users");
+        }
+
+        public ActionResult UnblockUser(int id)
+        {
+            var user = db.Users.Find(id);
+            if (user != null)
+            {
+                user.IsBlocked = false;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Users");
+        }
+
+
 
         public ActionResult Category()
         {
