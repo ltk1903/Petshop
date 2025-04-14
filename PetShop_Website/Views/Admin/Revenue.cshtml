@@ -1,21 +1,22 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Revenue";
     Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+    string FormatCurrency(decimal amount) => string.Format("{0:#,##0}₫", amount);
 }
+
 
 <div class="container">
     <div class="page-inner">
         <h3 class="mb-4">Revenue statistics</h3>
 
         <!-- Bộ lọc -->
-        <form class="form-inline mb-4">
+        <form class="form-inline mb-4" method="get">
             <label class="mr-2">Filter by:</label>
-            <select class="form-control mr-2">
-                <option>In a day</option>
-                <option>In a week</option>
-                <option>In a month</option>
-                <option>In a year</option>
+            <select name="filter" class="form-control mr-2">
+                <option value="day" @(Request["filter"] == "day" ? "selected" : "")>In a day</option>
+                <option value="week" @(Request["filter"] == "week" ? "selected" : "")>In a week</option>
+                <option value="month" @(Request["filter"] == "month" ? "selected" : "")>In a month</option>
+                <option value="year" @(Request["filter"] == "year" ? "selected" : "")>In a year</option>
             </select>
             <button type="submit" class="btn btn-primary">Filter</button>
         </form>
@@ -26,7 +27,7 @@
                 <div class="card text-white bg-success mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Total revenue</h5>
-                        <p class="card-text">18.520.000₫</p>
+                        <p class="card-text">@FormatCurrency((decimal)(ViewBag.TotalRevenue ?? 0))</p>
                     </div>
                 </div>
             </div>
@@ -34,7 +35,7 @@
                 <div class="card text-white bg-info mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Total orders</h5>
-                        <p class="card-text">58 orders</p>
+                        <p class="card-text">@ViewBag.TotalOrders orders</p>
                     </div>
                 </div>
             </div>
@@ -42,7 +43,7 @@
                 <div class="card text-white bg-warning mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Sold products</h5>
-                        <p class="card-text">234 sản phẩm</p>
+                        <p class="card-text">@ViewBag.TotalSoldProducts sản phẩm</p>
                     </div>
                 </div>
             </div>
@@ -52,11 +53,46 @@
         <div class="card mt-4">
             <div class="card-body">
                 <h5 class="card-title">Revenue charts</h5>
-                <div style="height: 300px; background: #f0f0f0; text-align:center; line-height:300px;">
-                    [Biểu đồ ở đây sau này]
-                </div>
+                <canvas id="revenueChart" height="100"></canvas>
             </div>
         </div>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    var ctx = document.getElementById('revenueChart').getContext('2d');
+    var revenueChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: @Html.Raw(Json.Encode(ViewBag.ChartLabels)),
+            datasets: [{
+                label: 'Doanh thu theo ngày',
+                data: @Html.Raw(Json.Encode(ViewBag.ChartValues)),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: '#007bff',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value.toLocaleString() + '₫';
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true
+                }
+            }
+        }
+    });
+</script>

@@ -141,10 +141,60 @@ namespace PetShop_Website.Controllers
             return RedirectToAction("Order");
         }
 
-        public ActionResult Revenue()
+        public ActionResult Revenue(string filter)
         {
+            DateTime startDate = DateTime.MinValue;
+            DateTime endDate = DateTime.Now;
+
+            switch (filter)
+            {
+                case "day":
+                    startDate = DateTime.Today;
+                    break;
+                case "week":
+                    startDate = DateTime.Today.AddDays(-7);
+                    break;
+                case "month":
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    break;
+                case "year":
+                    startDate = new DateTime(DateTime.Today.Year, 1, 1);
+                    break;
+                default:
+                    break;
+            }
+
+            var orders = db.Orders
+                .Where(o => o.OrderDate >= startDate && o.OrderDate <= endDate)
+                .ToList();
+
+            var orderIds = orders.Select(o => o.OrderID).ToList();
+
+            var orderDetails = db.OrderDetails
+                .Where(od => orderIds.Contains(od.OrderID))
+                .ToList();
+
+            ViewBag.TotalOrders = orders.Count;
+            ViewBag.TotalSoldProducts = orderDetails.Sum(od => od.Quantity);
+            ViewBag.TotalRevenue = orderDetails.Sum(od => od.Quantity * od.UnitPrice);
+
+            var revenueByDate = orders
+                .GroupBy(o => o.OrderDate.Date)
+                .Select(g => new
+                {
+                    Date = g.Key.ToString("dd/MM"),
+                    Revenue = g.SelectMany(o => o.OrderDetails).Sum(od => od.Quantity * od.UnitPrice)
+                })
+                .OrderBy(r => r.Date)
+                .ToList();
+
+            ViewBag.ChartLabels = revenueByDate.Select(r => r.Date).ToList();
+            ViewBag.ChartValues = revenueByDate.Select(r => r.Revenue).ToList();
+
             return View();
         }
+
+
 
         public ActionResult Delivery()
         {
